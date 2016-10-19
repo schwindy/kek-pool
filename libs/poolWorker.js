@@ -175,7 +175,8 @@ module.exports = function(logger){
 
 
         var pool = Stratum.createPool(poolOptions, authorizeFN, logger);
-        pool.on('share', function(isValidShare, isValidBlock, data)
+        pool.
+        on('share', function(isValidShare, isValidBlock, data)
         {
             var shareData = JSON.stringify(data);
 
@@ -187,11 +188,14 @@ module.exports = function(logger){
                     logSubCat,
                     'We thought a block was found but it was rejected by the daemon, share data: '+shareData
                 );
-
             else if(isValidBlock)
                 logger.debug
                 (
-                    logSystem, logComponent, logSubCat, 'Block found: ' + data.blockHash + ' by ' + data.worker);
+                    logSystem,
+                    logComponent,
+                    logSubCat,
+                    'Block found: '+data.blockHash+' by '+data.worker
+                );
 
             if(isValidShare)
             {
@@ -219,7 +223,6 @@ module.exports = function(logger){
                     logSubCat,
                     'Share accepted at diff '+data.difficulty+' / '+data.shareDiff+' by '+data.worker+' ['+data.ip+']'
                 );
-
             }
             else if(!isValidShare)
                 logger.debug
@@ -230,17 +233,19 @@ module.exports = function(logger){
                     'Share rejected: '+shareData
                 );
 
-            handlers.share(isValidShare, isValidBlock, data)
-
-
-        }).on('difficultyUpdate', function(workerName, diff){
+            handlers.share(isValidShare, isValidBlock, data);
+        }).
+        on('difficultyUpdate', function(workerName, diff){
             logger.debug(logSystem, logComponent, logSubCat, 'Difficulty update to diff ' + diff + ' workerName=' + JSON.stringify(workerName));
             handlers.diff(workerName, diff);
-        }).on('log', function(severity, text) {
+        }).
+        on('log', function(severity, text) {
             logger[severity](logSystem, logComponent, logSubCat, text);
-        }).on('banIP', function(ip, worker){
+        }).
+        on('banIP', function(ip, worker){
             process.send({type: 'banIP', ip: ip});
-        }).on('started', function(){
+        }).
+        on('started', function(){
             _this.setDifficultyForProxyPort(pool, poolOptions.coin.name, poolOptions.coin.algorithm);
         });
 
