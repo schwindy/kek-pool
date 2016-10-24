@@ -197,8 +197,8 @@ function SetupForPool(logger, poolOptions, setupFinished){
 
             /* Does a batch rpc call to daemon with all the transaction hashes to see if they are confirmed yet.
                It also adds the block reward amount to the round object - which the daemon gives also gives us. */
-            function(workers, rounds, callback){
-
+            function(workers, rounds, callback)
+            {
                 var batchRPCcommand = rounds.map(function(r){
                     return ['gettransaction', [r.txHash]];
                 });

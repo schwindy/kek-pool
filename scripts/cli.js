@@ -29,8 +29,6 @@ var client = net.connect(options.port || defaultPort, options.host || defaultHos
 }).on('error', function(error){
     if (error.code === 'ECONNREFUSED')
         console.log('Could not connect to NOMP instance at ' + defaultHost + ':' + defaultPort);
-    else
-        console.log('Socket error ' + JSON.stringify(error));
 }).on('data', function(data) {
     console.log(data.toString());
 }).on('close', function () {
